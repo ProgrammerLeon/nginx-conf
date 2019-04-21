@@ -7,7 +7,14 @@ upstream jenkins.pgleon.com{
 server {
   listen 80;
   server_name jenkins.pgleon.com;
-  include location/jenkins.pgleon.com.conf;
+
+  location / {
+      proxy_pass http://nexus.pgleon.com;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto "http";
+    }
 }
 
 
